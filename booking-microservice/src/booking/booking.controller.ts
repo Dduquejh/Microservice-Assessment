@@ -8,28 +8,31 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
-  @MessagePattern('createBooking')
+  @MessagePattern({ cmd: 'createBooking' })
   create(@Payload() createBookingDto: CreateBookingDto) {
     return this.bookingService.create(createBookingDto);
   }
 
-  @MessagePattern('findAllBooking')
+  @MessagePattern({ cmd: 'findAllBooking' })
   findAll() {
     return this.bookingService.findAll();
   }
 
-  @MessagePattern('findOneBooking')
-  findOne(@Payload() id: number) {
+  @MessagePattern({ cmd: 'findOneBooking' })
+  findOne(@Payload() id: string) {
     return this.bookingService.findOne(id);
   }
 
-  @MessagePattern('updateBooking')
+  @MessagePattern({ cmd: 'updateBooking' })
   update(@Payload() updateBookingDto: UpdateBookingDto) {
-    return this.bookingService.update(updateBookingDto.id, updateBookingDto);
+    return this.bookingService.update(
+      updateBookingDto.EventID,
+      updateBookingDto,
+    );
   }
 
-  @MessagePattern('removeBooking')
-  remove(@Payload() id: number) {
+  @MessagePattern({ cmd: 'removeBooking' })
+  remove(@Payload() id: string) {
     return this.bookingService.remove(id);
   }
 }
